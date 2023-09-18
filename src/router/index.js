@@ -19,7 +19,7 @@ const routes = [
       {
         path: 'lista-de-alunos',
         name: 'students-list',
-        component: () => import('@/views/Home.vue'),
+        component: () => import('@/views/StudentsList.vue'),
       },
     ],
   },

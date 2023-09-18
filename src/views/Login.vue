@@ -38,28 +38,69 @@
           size="large"
           type="submit"
           variant="elevated"
+          :loading="loading.login"
         >
           Login
         </v-btn>
       </v-form>
     </v-card>
   </v-sheet>
+
+  <v-snackbar
+    v-model="snackbar"
+    :timeout="2000"
+    color="error"
+    location="center top"
+  >
+    {{ text }}
+
+    <template v-slot:actions>
+      <v-btn
+        color="white"
+        variant="text"
+        @click="snackbar = false"
+      >
+        Fechar
+      </v-btn>
+    </template>
+  </v-snackbar>
+
 </template>
 
 <script>
+import api from '@/utils/api.js'
+
 export default {
   data() {
     return {
       email: '',
       password: '',
+      snackbar: false,
+      text: '',
+      loading: {
+        login: false,
+      }
     };
   },
   methods: {
     onSubmit() {
-      console.log('onSubmit');
-      console.log(this.email);
-      console.log(this.password);
-      this.$router.push('/lista-de-alunos');
+      this.loading.login = true;
+      api.post('/auth/login', {
+        email: this.email,
+        password: this.password,
+      })
+      .then((response) => {
+        localStorage.setItem('access_token', JSON.stringify(response.data.access_token));
+        localStorage.setItem('user', JSON.stringify(response.data.user));
+        this.$router.push('/lista-de-alunos')
+      })
+      .catch((e) => {
+        this.snackbar = true;
+        this.text = e.response.data.message;
+      })
+      .finally(() => {
+        this.loading.login = false;
+      });
     },
   },
 };

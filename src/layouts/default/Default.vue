@@ -8,9 +8,10 @@
     >
       <template v-slot:prepend>
         <v-list-item
+          v-if="user"
           lines="two"
           prepend-avatar="https://randomuser.me/api/portraits/lego/1.jpg"
-          title="Nome do professor"
+          :title="user.name"
           subtitle="Bem vindo!"
         ></v-list-item>
       </template>
@@ -24,6 +25,8 @@
           <v-btn
             color="blue"
             block
+            @click="logout"
+            :loading="loading.logout"
           >
             Logout
           </v-btn>
@@ -50,7 +53,40 @@
   </v-app>
 </template>
 <script>
-  export default {
-    data: () => ({ drawer: null }),
+import api from '@/utils/api.js'
+
+export default {
+  data: () => ({
+    drawer: null,
+    loading: {
+      logout: false,
+    },
+    user: null,
+  }),
+  created() {
+    this.user = JSON.parse(localStorage.getItem('user'));
+  },
+  methods: {
+    logout() {
+      
+      this.loading.logout = true;
+
+      api.post('/auth/logout')
+        .then(() => {
+          this.$router.push('/login')
+        })
+        .catch((e) => {
+          console.log('error');
+          console.log(e);
+        })
+        .finally(() => {
+          localStorage.removeItem('access_token');
+          localStorage.removeItem('user');
+          this.$router.push('/login')
+          this.loading.logout = false;
+        });
+
+    }
   }
+}
 </script>
