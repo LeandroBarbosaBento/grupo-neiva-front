@@ -4,7 +4,10 @@
       <v-app-bar-title>Students Manager</v-app-bar-title>
 
       <template v-slot:append>
-        <v-btn icon="mdi-github"></v-btn>
+        <v-btn
+          icon="mdi-github"
+          @click="openGithub"
+        />
 
 
         <v-btn
@@ -56,7 +59,9 @@ export default {
           this.$router.push('/login')
           this.loading.logout = false;
         });
-
+    },
+    openGithub() {
+      window.open('https://github.com/LeandroBarbosaBento', '_blank');
     }
   }
 }
