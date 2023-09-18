@@ -90,7 +90,7 @@ export default {
         password: this.password,
       })
       .then((response) => {
-        localStorage.setItem('access_token', JSON.stringify(response.data.access_token));
+        localStorage.setItem('access_token', response.data.access_token);
         localStorage.setItem('user', JSON.stringify(response.data.user));
         this.$router.push('/lista-de-alunos')
       })
