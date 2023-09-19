@@ -164,6 +164,7 @@ export default {
           console.log(response.data);
           this.snackbar.text = 'Dados atualizados com sucesso!';
           this.snackbar.type = 'success';
+          this.dialog = false;
         })
         .catch((e) => {
           this.snackbar.text = 'Erro ao atualizar os dados! ';
@@ -186,6 +187,7 @@ export default {
           console.log(response.data);
           this.snackbar.text = 'Estudante cadastrado com sucesso!';
           this.snackbar.type = 'success';
+          this.dialog = false;
         })
         .catch((e) => {
           this.snackbar.text = 'Erro ao cadastrar os dados! ';
